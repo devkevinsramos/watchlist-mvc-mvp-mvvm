@@ -1,13 +1,13 @@
 /*
   Ponto de entrada da aplicação.
-  Aqui juntamos as três partes do MVP:
+  Aqui juntamos as três partes do MVVM:
   - Model/Repository: dados e regras
-  - View: tela passiva
-  - Presenter: coordenação da lógica de apresentação
+  - View: tela e eventos do HTML
+  - ViewModel: estado da tela e lógica de apresentação
 */
 document.addEventListener("DOMContentLoaded", () => {
   const repository = new MovieRepository();
-  const view = new MovieView();
+  const viewModel = new MovieViewModel(repository);
 
-  new MoviePresenter(repository, view);
+  new MovieView(viewModel);
 });
