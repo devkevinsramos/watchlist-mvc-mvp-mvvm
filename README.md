@@ -1,6 +1,6 @@
-# Watchlist MVP
+# Watchlist MVVM
 
-A college front-end project created to demonstrate the MVP architectural pattern through a simple movie watchlist.
+A college front-end project created to demonstrate the MVVM architectural pattern through a simple movie watchlist.
 
 The user can register movies with title, year, genre, short synopsis, and status. Each movie can be marked as watched or not watched, edited, deleted, searched, and filtered.
 
@@ -8,9 +8,9 @@ Live preview: coming soon.
 
 ## About
 
-Watchlist MVP is a simple web application built to show how MVP separates responsibilities in a clear and practical way.
+Watchlist MVVM is a simple web application built to show how MVVM separates responsibilities in a clear and practical way.
 
-In this project, the Model manages the movie data, the View handles what appears on the screen, and the Presenter connects the View with the application logic. Unlike MVC, the View delegates user actions directly to the Presenter.
+In this project, the Model manages the movie data, the View handles what appears on the screen, and the ViewModel prepares the data and actions used by the View. This structure helps separate the interface from the application logic.
 
 ## Features
 
@@ -29,8 +29,8 @@ In this project, the Model manages the movie data, the View handles what appears
 - CSS
 - JavaScript
 - localStorage
-- MVP architecture
+- MVVM architecture
 
 ## Status
 
-MVP version completed.
+MVVM version completed.
