@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Watchlist MVVM</title>
+  <title>Watchlist MVC, MVP e MVVM</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -12,12 +12,25 @@
     <header class="hero">
       <h1>Watchlist</h1>
       <p class="hero__description">
-        Um catálogo simples para organizar filmes vistos e não vistos usando MVVM.
+        Um catálogo simples para organizar filmes vistos e não vistos usando MVC, MVP e MVVM.
       </p>
     </header>
 
-    <!-- Indicadores -->
-    <section class="stats" aria-label="Resumo da watchlist">
+    <!-- Indicadores e seletor de arquitetura -->
+    <section class="stats stats--with-architecture" aria-label="Resumo da watchlist">
+      <article class="architecture-switch glass-panel" aria-label="Seleção de arquitetura">
+        <p>
+          Arquitetura ativa:
+          <strong id="architectureName">MVVM</strong>
+        </p>
+
+        <div class="architecture-switch__links">
+          <a href="?arch=mvc" data-architecture-link="mvc">MVC</a>
+          <a href="?arch=mvp" data-architecture-link="mvp">MVP</a>
+          <a href="?arch=mvvm" data-architecture-link="mvvm">MVVM</a>
+        </div>
+      </article>
+
       <article class="stat-card glass-panel">
         <span>Filmes cadastrados</span>
         <strong id="totalMovies">0</strong>
@@ -116,11 +129,19 @@
     </section>
   </main>
 
-  <!-- Ordem importante: Model, ViewModel, View e por último o app. -->
+  <!--
+    Ordem importante:
+    1. Model e Repository
+    2. View compartilhada
+    3. Camadas de arquitetura
+    4. app.js para escolher qual arquitetura será executada
+  -->
   <script src="assets/js/model/Movie.js"></script>
   <script src="assets/js/model/MovieRepository.js"></script>
-  <script src="assets/js/viewmodel/MovieViewModel.js"></script>
   <script src="assets/js/view/MovieView.js"></script>
+  <script src="assets/js/controller/MovieController.js"></script>
+  <script src="assets/js/presenter/MoviePresenter.js"></script>
+  <script src="assets/js/viewmodel/MovieViewModel.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>

@@ -2,11 +2,18 @@
   VIEW: MovieView
   A View cuida da tela.
   Ela lê campos, escuta cliques e desenha os cards no HTML.
-  Ela não decide regras de negócio, não salva dados diretamente e chama as ações expostas pelo ViewModel.
+
+  Neste projeto, a mesma View é reaproveitada nas três arquiteturas:
+  - No MVC, ela é controlada pelo Controller.
+  - No MVP, ela é controlada pelo Presenter.
+  - No MVVM, ela se conecta ao ViewModel e reage ao estado atualizado.
+
+  Assim, a interface fica única e o que muda é apenas a camada responsável
+  por coordenar as ações da tela.
 */
 class MovieView {
-  constructor(viewModel) {
-    this.viewModel = viewModel;
+  constructor(viewModel = null) {
+    this.viewModel = null;
     this.form = document.querySelector("#movieForm");
     this.movieIdInput = document.querySelector("#movieId");
     this.titleInput = document.querySelector("#title");
@@ -24,16 +31,30 @@ class MovieView {
     this.watchedMovies = document.querySelector("#watchedMovies");
     this.lastEditingMovieId = null;
 
-    this.bindEvents();
-    this.viewModel.subscribe((state) => this.render(state));
+    /*
+      Compatibilidade com a versão antiga:
+      se alguém ainda criar new MovieView(viewModel), o MVVM continua funcionando.
+      No app.js atual, criamos a View vazia e conectamos depois.
+    */
+    if (viewModel) {
+      this.connectViewModel(viewModel);
+    }
   }
 
-  bindEvents() {
+  /*
+    Conexão específica do MVVM.
+    A View chama ações do ViewModel e se inscreve para renderizar o estado atualizado.
+  */
+  connectViewModel(viewModel) {
+    this.viewModel = viewModel;
+
     this.bindSubmit((movieData) => this.viewModel.handleSubmit(movieData));
     this.bindCancelEdit(() => this.viewModel.cancelEdit());
     this.bindSearch((filters) => this.viewModel.updateFilters(filters));
     this.bindEdit((movieId) => this.viewModel.prepareEdit(movieId));
     this.bindDelete((movieId) => this.confirmAndDelete(movieId));
+
+    this.viewModel.subscribe((state) => this.render(state));
   }
 
   bindSubmit(handler) {
@@ -41,6 +62,10 @@ class MovieView {
       event.preventDefault();
       const wasSaved = handler(this.getFormData());
 
+      /*
+        No MVVM, o ViewModel retorna true quando salvou corretamente.
+        No MVC e MVP, o Controller/Presenter já cuidam de resetar o formulário.
+      */
       if (wasSaved) {
         this.lastEditingMovieId = null;
         this.resetForm();
@@ -107,6 +132,10 @@ class MovieView {
     };
   }
 
+  /*
+    Renderização usada principalmente pelo MVVM.
+    O ViewModel envia um objeto de estado completo para a View atualizar a tela.
+  */
   render(state) {
     this.renderStats(state.stats);
     this.renderMovies(state.movies);
@@ -151,6 +180,7 @@ class MovieView {
     this.movieIdInput.value = "";
     this.submitButton.textContent = "Salvar filme";
     this.cancelEditButton.classList.add("hidden");
+    this.clearFeedback();
   }
 
   renderFeedback(message) {

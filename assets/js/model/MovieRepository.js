@@ -1,10 +1,11 @@
 /*
   MODEL: MovieRepository
   Esta classe simula uma base de dados usando localStorage.
+  Ela é compartilhada por MVC, MVP e MVVM.
   Se o projeto evoluir, esta seria a parte trocada por uma API ou banco real.
 */
 class MovieRepository {
-  constructor(storageKey = "watchlist_movies_mvvm_v2") {
+  constructor(storageKey = "watchlist_movies_architecture_demo") {
     this.storageKey = storageKey;
     this.seedInitialData();
   }
